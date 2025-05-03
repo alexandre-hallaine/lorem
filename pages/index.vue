@@ -1,37 +1,39 @@
 <script setup lang="ts">
-import { LoremIpsum } from "lorem-ipsum";
+import { loremIpsum } from "lorem-ipsum";
 
 const data = ref('')
 const { copy } = useClipboard({ source: data })
 
-const lorem = new LoremIpsum();
-
 const amount = ref(5)
-const type = ref('Paragraphs')
-const types = ['Words', 'Sentences', 'Paragraphs']
+const unit = ref('Paragraphs')
+const units = ['Word', 'Sentence', 'Paragraph']
 
 
 function generate() {
-  switch (type.value) {
-    case 'Words':
-      data.value = lorem.generateWords(amount.value);
-      break;
-    case 'Sentences':
-      data.value = lorem.generateSentences(amount.value);
-      break;
-    case 'Paragraphs':
-      data.value = lorem.generateParagraphs(amount.value);
-      break;
-  }
+  data.value = loremIpsum({
+    count: amount.value,
+    units: unit.value.toLowerCase()
+  }).replace(/\n/g, '\n\n')
+}
+
+const toast = useToast()
+
+function toastCopy() {
+  copy()
+  toast.add({title: "Copied"})
 }
 </script>
 
 <template>
-  <div>
-    <UInputNumber v-model="amount" :min="0"/>
-    <UInputMenu v-model="type" :items="types"/>
-    <UButton @click="generate">Generate</UButton>
-    <UButton @click="copy()">Copy</UButton>
-    <p>{{data}}</p>
-  </div>
+  <UPageSection>
+    <UPageCTA title="Lorem">
+      <div class="flex justify-center gap-3">
+        <UInputNumber v-model="amount" :min="0"/>
+        <UInputMenu v-model="unit" :items="units"/>
+        <UButton @click="generate">Generate</UButton>
+        <UButton label="Copy" color="neutral" @click="toastCopy"/>
+      </div>
+      <p class="whitespace-pre-wrap">{{data}}</p>
+    </UPageCTA>
+  </UPageSection>
 </template>
