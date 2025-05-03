@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { loremIpsum } from "lorem-ipsum";
+import { useStorage } from '@vueuse/core'
 
 const data = ref('')
-const { copy } = useClipboard({ source: data })
-
-const amount = ref(5)
-const unit = ref('Paragraphs')
+const amount = useStorage('amount', 5);
+const unit = useStorage('unit', 'Paragraph');
 const units = ['Word', 'Sentence', 'Paragraph']
 
+const { copy } = useClipboard({ source: data })
+const toast = useToast()
 
 function generate() {
   data.value = loremIpsum({
@@ -16,12 +17,13 @@ function generate() {
   }).replace(/\n/g, '\n\n')
 }
 
-const toast = useToast()
-
 function toastCopy() {
   copy()
   toast.add({title: "Copied"})
 }
+
+onMounted(() => generate())
+watch([amount, unit], () => generate())
 </script>
 
 <template>
@@ -30,10 +32,9 @@ function toastCopy() {
       <div class="flex justify-center gap-3">
         <UInputNumber v-model="amount" :min="0"/>
         <UInputMenu v-model="unit" :items="units"/>
-        <UButton @click="generate">Generate</UButton>
-        <UButton label="Copy" color="neutral" @click="toastCopy"/>
+        <UButton label="Copy" @click="toastCopy"/>
       </div>
-      <p class="whitespace-pre-wrap">{{data}}</p>
+      <p class="whitespace-pre-wrap h-100 overflow-auto">{{data}}</p>
     </UPageCTA>
   </UPageSection>
 </template>
