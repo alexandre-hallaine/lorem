@@ -1,75 +1,10 @@
-# Nuxt Minimal Starter
+# Lorem Minimal
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Conçu pour celles et ceux qui en ont assez des générateurs surchargés, ce projet propose une interface épurée, centrée
+sur une seule chose : produire du texte de remplissage, rapidement, proprement.
 
-## Setup
+Développé avec **Nuxt 3** et **@vueuse/core**, il repose sur des choix techniques modernes pour offrir une expérience
+fluide, réactive et sans distraction.
 
-Make sure to install dependencies:
-
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Aucune pub, aucun traqueur, aucune friction — juste un petit outil pratique, pensé pour les designers, développeurs et
+curieux du quotidien.
