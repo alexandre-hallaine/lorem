@@ -31,7 +31,7 @@ watch([amount, unit], () => generate())
     <UPageCTA title="Lorem Minimal">
       <div class="flex justify-center gap-3">
         <UInputNumber v-model="amount" :min="0"/>
-        <UInputMenu v-model="unit" :items="units"/>
+        <USelectMenu v-model="unit" :items="units"/>
         <UButton label="Copy" @click="copyClick"/>
       </div>
       <p class="whitespace-pre-wrap h-100 overflow-auto">{{ data }}</p>
