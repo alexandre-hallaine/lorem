@@ -1,7 +1,7 @@
 import {beforeEach, describe, expect, it, vi} from 'vitest';
 import {mountSuspended} from "@nuxt/test-utils/runtime";
 import IndexPage from '~/pages/index.vue';
-import {UButton, UInputMenu, UInputNumber} from "#components";
+import {UButton, UInputNumber, USelectMenu} from "#components";
 import {useStorage} from '@vueuse/core'
 import {loremIpsum} from 'lorem-ipsum';
 
@@ -31,11 +31,11 @@ describe('IndexPage', () => {
             .toBe(loremIpsum({count: 5, units: 'paragraph'}));
     });
 
-    it('Generates text on load and input changes', async () => {
+    it('Generates text on input changes', async () => {
         const wrapper = await mountSuspended(IndexPage);
 
         wrapper.findComponent(UInputNumber).vm.$emit('update:modelValue', 10);
-        wrapper.findComponent(UInputMenu).vm.$emit('update:modelValue', 'Sentence');
+        wrapper.findComponent(USelectMenu).vm.$emit('update:modelValue', 'Sentence');
 
         await wrapper.vm.$nextTick();
 
