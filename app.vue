@@ -1,44 +1,52 @@
 <script setup lang="ts">
-import {loremIpsum} from 'lorem-ipsum'
+import { loremIpsum } from "lorem-ipsum";
+import type { LoremUnit } from "lorem-ipsum/types/src/constants/units";
 
-const amount = useCookie('amount', { default: () => 5 });
-const unit = useCookie('unit', { default: () => 'Paragraph' });
-const lorem = useState('lorem', generate)
-const units = ['Word', 'Sentence', 'Paragraph']
+const amount = useCookie("amount", { default: () => 5 });
+const unit = useCookie("unit", { default: () => "Paragraph" });
+const lorem = useState("lorem", generate);
+const units = ["Word", "Sentence", "Paragraph"];
 
-const {copy} = useClipboard({source: lorem})
-const toast = useToast()
+const { copy } = useClipboard({ source: lorem });
+const toast = useToast();
 
 function generate() {
   return loremIpsum({
     count: amount.value,
-    units: unit.value.toLowerCase()
-  })
+    units: unit.value.toLowerCase() as LoremUnit,
+  });
 }
 
 function copyClick() {
-  copy()
-  toast.add({title: "Copied"})
+  copy();
+  toast.add({ title: "Copied" });
 }
 
-watchDebounced(
-  [amount, unit],
-  () => lorem.value = generate(),
-  { debounce: 500, maxWait: 1000 },
-)
+watchDebounced([amount, unit], () => (lorem.value = generate()), {
+  debounce: 200,
+});
 </script>
 
 <template>
   <UApp>
-    <UPageSection>
-      <UPageCTA title="Lorem Minimal">
-        <div class="flex justify-center gap-3">
-          <UInputNumber v-model="amount" :min="0"/>
-          <USelectMenu v-model="unit" :items="units"/>
-          <UButton label="Copy" @click="copyClick"/>
-        </div>
-        <p class="whitespace-pre-wrap h-100 overflow-auto">{{ lorem }}</p>
-      </UPageCTA>
+    <UPageSection title="Lorem Minimal" :ui="{ container: 'h-screen lg:flex' }">
+      <UCard
+        class="h-full flex flex-col overflow-hidden shadow-lg"
+        :ui="{ body: 'overflow-auto' }"
+      >
+        <template #header>
+          <div class="grid sm:grid-cols-3 gap-3 max-w-xl mx-auto">
+            <UInputNumber v-model="amount" :min="0" />
+            <USelect v-model="unit" :items="units" />
+            <UButton
+              label="Copy"
+              :ui="{ label: 'text-center w-full' }"
+              @click="copyClick"
+            />
+          </div>
+        </template>
+        <p class="whitespace-pre-wrap">{{ lorem }}</p>
+      </UCard>
     </UPageSection>
   </UApp>
 </template>
