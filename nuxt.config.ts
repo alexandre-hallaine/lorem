@@ -9,13 +9,4 @@ export default defineNuxtConfig({
     ],
     css: ['~/assets/css/main.css'],
     app: {head: {title: 'Lorem Minimal'}},
-
-    imports: {
-        presets: [
-            {
-                from: 'lorem-ipsum',
-                imports: ['loremIpsum']
-            }
-        ]
-    }
 })

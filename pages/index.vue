@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import {useStorage} from '@vueuse/core'
 import {loremIpsum} from 'lorem-ipsum'
 
-const data = ref('')
-const amount = useStorage('amount', 5);
-const unit = useStorage('unit', 'Paragraph');
+const amount = useCookie('amount', { default: () => 5 });
+const unit = useCookie('unit', { default: () => 'Paragraph' });
+const lorem = useState('lorem', generate)
 const units = ['Word', 'Sentence', 'Paragraph']
 
-const {copy} = useClipboard({source: data})
+const {copy} = useClipboard({source: lorem})
 const toast = useToast()
 
 function generate() {
-  data.value = loremIpsum({
+  return loremIpsum({
     count: amount.value,
     units: unit.value.toLowerCase()
   })
@@ -22,8 +21,11 @@ function copyClick() {
   toast.add({title: "Copied"})
 }
 
-onMounted(() => generate())
-watch([amount, unit], () => generate())
+watchDebounced(
+  [amount, unit],
+  () => lorem.value = generate(),
+  { debounce: 500, maxWait: 1000 },
+)
 </script>
 
 <template>
@@ -34,7 +36,7 @@ watch([amount, unit], () => generate())
         <USelectMenu v-model="unit" :items="units"/>
         <UButton label="Copy" @click="copyClick"/>
       </div>
-      <p class="whitespace-pre-wrap h-100 overflow-auto">{{ data }}</p>
+      <p class="whitespace-pre-wrap h-100 overflow-auto">{{ lorem }}</p>
     </UPageCTA>
   </UPageSection>
 </template>

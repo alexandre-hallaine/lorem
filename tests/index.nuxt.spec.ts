@@ -2,7 +2,6 @@ import {beforeEach, describe, expect, it, vi} from 'vitest';
 import {mountSuspended} from "@nuxt/test-utils/runtime";
 import IndexPage from '~/pages/index.vue';
 import {UButton, UInputNumber, USelectMenu} from "#components";
-import {useStorage} from '@vueuse/core'
 import {loremIpsum} from 'lorem-ipsum';
 
 const copyMock = vi.fn();
@@ -24,8 +23,6 @@ describe('IndexPage', () => {
     it('Renders correctly with initial data', async () => {
         const wrapper = await mountSuspended(IndexPage);
 
-        expect(useStorage).toHaveBeenCalledWith('amount', 5);
-        expect(useStorage).toHaveBeenCalledWith('unit', 'Paragraph');
         expect(loremIpsum).toHaveBeenCalledWith({count: 5, units: 'paragraph'});
         expect(wrapper.find('p.whitespace-pre-wrap').text())
             .toBe(loremIpsum({count: 5, units: 'paragraph'}));
